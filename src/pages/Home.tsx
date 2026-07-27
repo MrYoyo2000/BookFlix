@@ -34,7 +34,7 @@ export default function Home() {
 
   // Group filtered books by category (case-insensitive)
   // Fixed order: Manga, Marvel, DC first, then any other categories alphabetically
-  const categoryOrder = ["manga", "marvel", "DC"];
+  const categoryOrder = ["manga", "marvel", "dc"];
 
   const categories = Array.from(
     new Set(filtered.map((b) => (b.category || "Other").trim()))
@@ -97,31 +97,33 @@ export default function Home() {
           <p className="text-gray-400 text-center mt-10">Loading books...</p>
         ) : (
           <>
-            {/* CATEGORY SECTIONS */}
-            {categories.map((category) => {
-              const booksInCategory = filtered.filter(
-                (b) => (b.category || "Other").trim() === category
-              );
+            {/* LIBRARY (contains all category sections) */}
+            <div id="library">
+              {categories.map((category) => {
+                const booksInCategory = filtered.filter(
+                  (b) => (b.category || "Other").trim() === category
+                );
 
-              return (
-                <section
-                  key={category}
-                  id={`category-${category.toLowerCase()}`}
-                  className="mt-10 md:mt-12"
-                >
-                  <h2 className="text-lg md:text-xl font-bold mb-4 capitalize">
-                    {category}
-                  </h2>
-                  {renderBookGrid(booksInCategory)}
-                </section>
-              );
-            })}
+                return (
+                  <section
+                    key={category}
+                    id={`category-${category.toLowerCase()}`}
+                    className="mt-10 md:mt-12"
+                  >
+                    <h2 className="text-lg md:text-xl font-bold mb-4 capitalize">
+                      {category}
+                    </h2>
+                    {renderBookGrid(booksInCategory)}
+                  </section>
+                );
+              })}
 
-            {filtered.length === 0 && (
-              <p className="text-gray-500 text-center mt-10">
-                No books found.
-              </p>
-            )}
+              {filtered.length === 0 && (
+                <p className="text-gray-500 text-center mt-10">
+                  No books found.
+                </p>
+              )}
+            </div>
 
             <section id="favorites" className="mt-10 md:mt-12">
               <h2 className="text-lg md:text-xl font-bold mb-4">Favorites</h2>
