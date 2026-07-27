@@ -7,6 +7,7 @@ interface Props {
     onDelete: (id: number) => void;
     onToggleFav: (id: number) => void;
     onEdit: (book: Book) => void;
+    disableHoverScale?: boolean;
 }
 
 export default function BookCard({
@@ -15,6 +16,7 @@ export default function BookCard({
     onDelete,
     onToggleFav,
     onEdit,
+    disableHoverScale = false,
 }: Props) {
     // Builds an Amazon search link based on the book's title and author
     const amazonSearchUrl = `https://www.amazon.com/s?k=${encodeURIComponent(
@@ -22,8 +24,13 @@ export default function BookCard({
     )}`;
 
     return (
-        <div className="group bg-[#141414] rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition duration-300">
-
+        <div
+            className={`group bg-[#141414] rounded-2xl overflow-hidden shadow-lg border transition-all duration-300 ease-out [transform-style:preserve-3d] ${
+                disableHoverScale
+                    ? "border-transparent hover:border-red-600 hover:shadow-[0_20px_35px_rgba(0,0,0,0.65)] hover:[transform:perspective(800px)_translateY(-10px)_scale(1.04)_rotateX(3deg)]"
+                    : "border-transparent hover:scale-105"
+            }`}
+        >
             {/* IMAGE */}
             <div className="relative h-60 w-full bg-black flex items-center justify-center">
                 <img

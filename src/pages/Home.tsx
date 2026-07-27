@@ -113,7 +113,7 @@ export default function Home() {
                     <h2 className="text-lg md:text-xl font-bold">Suggested for you</h2>
                   </div>
 
-                  <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-transparent">
+                  <div className="flex gap-4 overflow-x-auto pt-10 pb-2 pl-10 pr-10 snap-x snap-proximity scroll-smooth scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-transparent">
                     {suggestions.map((book) => (
                       <div
                         key={book.id}
@@ -125,6 +125,7 @@ export default function Home() {
                           onDelete={removeBook}
                           onToggleFav={toggleFavorite}
                           onEdit={setSelectedBook}
+                          disableHoverScale
                         />
                       </div>
                     ))}
