@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/Sidebar";
 import Hero from "../component/Hero";
@@ -49,6 +49,13 @@ export default function Home() {
     return a.localeCompare(b); // fallback alphabétique pour les catégories hors liste
   });
 
+  // Suggested books: a random sample of existing books, reshuffled
+  // only when the book list changes (not on every render).
+  const suggestions = useMemo(() => {
+    const shuffled = [...books].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 8);
+  }, [books]);
+
   const renderBookGrid = (list: Book[]) => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
       {list.map((book) => (
@@ -97,6 +104,35 @@ export default function Home() {
           <p className="text-gray-400 text-center mt-10">Loading books...</p>
         ) : (
           <>
+            {/* SUGGESTED FOR YOU — random picks, carousel style */}
+            {suggestions.length > 0 && (
+              <section id="suggested" className="mb-12">
+                <div className="rounded-2xl bg-gradient-to-r from-red-900/40 via-[#1a1a1a] to-black border border-red-900/30 p-5 md:p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-xl">✨</span>
+                    <h2 className="text-lg md:text-xl font-bold">Suggested for you</h2>
+                  </div>
+
+                  <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-red-700 scrollbar-track-transparent">
+                    {suggestions.map((book) => (
+                      <div
+                        key={book.id}
+                        className="snap-start shrink-0 w-40 sm:w-48"
+                      >
+                        <BookCard
+                          book={book}
+                          isFavorite={isFavorite(book.id)}
+                          onDelete={removeBook}
+                          onToggleFav={toggleFavorite}
+                          onEdit={setSelectedBook}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* LIBRARY (contains all category sections) */}
             <div id="library">
               {categories.map((category) => {

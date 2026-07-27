@@ -1,5 +1,5 @@
 import type { Book } from "../types/Book";
-import { Heart, Pencil, Trash } from "lucide-react";
+import { Heart, Pencil, Trash, ShoppingCart } from "lucide-react";
 
 interface Props {
     book: Book;
@@ -16,6 +16,11 @@ export default function BookCard({
     onToggleFav,
     onEdit,
 }: Props) {
+    // Builds an Amazon search link based on the book's title and author
+    const amazonSearchUrl = `https://www.amazon.com/s?k=${encodeURIComponent(
+        `${book.title} ${book.author}`
+    )}`;
+
     return (
         <div className="group bg-[#141414] rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition duration-300">
 
@@ -59,6 +64,16 @@ export default function BookCard({
                 <p className="text-gray-500 text-xs line-clamp-3">
                     {book.description}
                 </p>
+
+                {/* AMAZON LINK */}
+                <a
+                    href={amazonSearchUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-yellow-500 hover:text-yellow-400 text-sm pt-1"
+                >
+                    <ShoppingCart size={14} /> View on Amazon
+                </a>
 
                 {/* ACTIONS */}
                 <div className="flex justify-between pt-3">
